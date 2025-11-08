@@ -1,0 +1,691 @@
+/* General Styles */
+:root {
+    --background-dark: #1a1a2e;
+    --card-background: #23233c;
+    --text-light: #e0e0e0;
+    --text-dark-gray: #a0a0a0;
+    --accent-purple: #8a2be2;
+    --accent-blue: #00bfff;
+    --accent-green: #28a745;
+    --accent-yellow: #ffc107;
+    --accent-red: #dc3545;
+}
+
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: var(--background-dark);
+    color: var(--text-light);
+    margin: 0;
+    padding: 0;
+}
+
+.dashboard-container {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.card {
+    background-color: var(--card-background);
+    border-radius: 12px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+h2 {
+    color: var(--text-light);
+    font-size: 1.5em;
+    margin-bottom: 15px;
+}
+
+/* Header Styles */
+.header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 15px 30px;
+    background-color: var(--card-background);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.header .logo {
+    display: flex;
+    align-items: center;
+}
+
+.header .codezen-logo {
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+}
+
+.header h1 {
+    font-size: 1.8em;
+    color: var(--text-light);
+}
+
+.user-info-header {
+    display: flex;
+    align-items: center;
+}
+
+.welcome-text {
+    margin-right: 15px;
+    font-size: 1.1em;
+}
+
+.user-avatar-header {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background-color: var(--accent-blue);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.2em;
+}
+
+/* Main Content Layout */
+.main-content {
+    display: flex;
+    flex: 1;
+    padding: 20px;
+}
+
+.sidebar {
+    flex: 1;
+    margin-right: 20px;
+}
+
+.content-area {
+    flex: 2;
+}
+
+/* Progress Card */
+.progress-card {
+    text-align: center;
+}
+
+.progress-circle {
+    width: 120px;
+    height: 120px;
+    border-radius: 50%;
+    border: 8px solid rgba(255, 255, 255, 0.1);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 20px auto;
+    position: relative;
+    background: conic-gradient(var(--accent-purple) 35%, transparent 35%);
+}
+
+.progress-circle::before {
+    content: '';
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+    background-color: var(--card-background);
+}
+
+.progress-percent {
+    position: relative;
+    font-size: 1.8em;
+    font-weight: bold;
+    z-index: 1;
+}
+
+.progress-card p {
+    color: var(--text-dark-gray);
+    margin-top: 10px;
+}
+
+.progress-card .keep-going {
+    color: var(--text-light);
+    font-weight: bold;
+}
+
+/* Languages Card */
+.languages-card ul {
+    list-style: none;
+    padding: 0;
+}
+
+.languages-card li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.languages-card li:last-child {
+    border-bottom: none;
+}
+
+.languages-card li i {
+    margin-right: 10px;
+    color: var(--accent-blue);
+}
+
+/* Stats Card */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 15px;
+    text-align: center;
+}
+
+.stat-item {
+    background-color: rgba(255, 255, 255, 0.05);
+    padding: 15px;
+    border-radius: 8px;
+}
+
+.stat-value {
+    font-size: 1.5em;
+    font-weight: bold;
+    color: var(--accent-purple);
+}
+
+.stat-label {
+    color: var(--text-dark-gray);
+    font-size: 0.8em;
+    margin-top: 5px;
+}
+
+/* Features Card */
+.features-card .features-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+}
+
+.feature-item {
+    background-color: rgba(255, 255, 255, 0.05);
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+}
+
+.feature-icon {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: var(--accent-blue);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.8em;
+    margin: 0 auto 15px;
+}
+
+.feature-icon.green {
+    background-color: var(--accent-green);
+}
+
+.feature-icon.yellow {
+    background-color: var(--accent-yellow);
+}
+
+.feature-icon.red {
+    background-color: var(--accent-red);
+}
+
+.feature-icon.blue {
+    background-color: var(--accent-blue);
+}
+
+.feature-item h3 {
+    font-size: 1.2em;
+    margin-bottom: 5px;
+}
+
+.feature-item p {
+    color: var(--text-dark-gray);
+    font-size: 0.9em;
+}
+
+/* Roadmap Card */
+.roadmap-steps {
+    position: relative;
+    padding-left: 20px;
+}
+
+.roadmap-steps::before {
+    content: '';
+    position: absolute;
+    left: 8px;
+    top: 0;
+    bottom: 0;
+    width: 2px;
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.roadmap-item {
+    display: flex;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+.roadmap-dot {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.2);
+    border: 2px solid var(--card-background);
+    flex-shrink: 0;
+    margin-right: 15px;
+    position: relative;
+    z-index: 1;
+}
+
+.roadmap-item.completed .roadmap-dot {
+    background-color: var(--accent-purple);
+    border-color: var(--accent-purple);
+}
+
+.roadmap-content h3 {
+    font-size: 1.1em;
+    margin-bottom: 5px;
+}
+
+.roadmap-content p {
+    color: var(--text-dark-gray);
+    font-size: 0.9em;
+    margin-bottom: 10px;
+}
+
+.roadmap-progress-bar {
+    background-color: rgba(255, 255, 255, 0.1);
+    height: 8px;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.roadmap-progress-bar .progress-fill {
+    height: 100%;
+    background-color: var(--accent-purple);
+    border-radius: 4px;
+    width: 0%; /* Will be set by inline style */
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .main-content {
+        flex-direction: column;
+    }
+
+    .sidebar {
+        margin-right: 0;
+    }
+}
+
+/* Instructor Dashboard Specific Styles */
+.instructor-main-content {
+    flex-direction: row; /* Ensure it stays row for larger screens */
+}
+
+.instructor-sidebar {
+    flex: 0.8; /* Adjust width for sidebar */
+    min-width: 250px;
+}
+
+.instructor-content-area {
+    flex: 2.2; /* Adjust width for content area */
+}
+
+.profile-card {
+    text-align: center;
+    padding: 30px 20px;
+}
+
+.profile-avatar {
+    width: 100px; /* Adjust to match the img width in HTML */
+    height: 100px; /* Adjust to match the img height in HTML */
+    border-radius: 50%;
+    /* background-color: var(--accent-purple); Removed as image handles background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    /* font-size: 3em; Removed as image handles content */
+    margin: 0 auto 15px;
+    /* color: var(--text-light); Removed as image handles content */
+    overflow: hidden; /* Ensure image stays within bounds */
+}
+
+.profile-avatar img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* Ensure the image covers the circle */
+    border: 3px solid var(--accent-purple); /* Border from HTML */
+}
+
+.profile-name {
+    font-size: 1.2em;
+    font-weight: bold;
+    color: var(--text-light);
+}
+
+/* Received Submissions Card */
+.received-submissions-card {
+    margin-top: 30px;
+    padding: 20px;
+}
+
+.received-submissions-card h2 {
+    font-size: 1.3em;
+    color: var(--text-light);
+    margin-bottom: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 8px;
+}
+
+.received-submissions-card ul {
+    list-style: none;
+    padding: 0;
+    max-height: 300px; /* Set a max height for scrolling */
+    overflow-y: auto; /* Enable vertical scrolling */
+    padding-right: 5px; /* Add some padding for scrollbar visibility */
+    -webkit-overflow-scrolling: touch; /* For smooth scrolling on iOS */
+}
+
+/* Custom scrollbar for received submissions */
+.received-submissions-card ul::-webkit-scrollbar {
+    width: 6px;
+}
+
+.received-submissions-card ul::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.received-submissions-card ul::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, rgba(0, 191, 255, 0.4), rgba(0, 191, 255, 0.8)); /* Accent blue gradient */
+    border-radius: 6px;
+}
+
+.received-submissions-card ul::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, rgba(0, 191, 255, 0.6), rgba(0, 191, 255, 1));
+}
+
+/* Firefox scrollbar */
+.received-submissions-card ul {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(0, 191, 255, 0.6) transparent;
+}
+
+.received-submissions-card li {
+    background-color: rgba(255, 255, 255, 0.05);
+    padding: 12px 15px;
+    border-radius: 8px;
+    margin-bottom: 10px;
+    border-left: 4px solid var(--accent-blue);
+    font-size: 0.95em;
+    line-height: 1.5;
+    transition: background-color 0.2s ease;
+}
+
+.received-submissions-card li:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.received-submissions-card li strong {
+    color: var(--accent-purple);
+    font-size: 1.05em;
+}
+
+.received-submissions-card li small {
+    color: var(--text-dark-gray);
+    font-size: 0.85em;
+}
+
+/* Assignments List Card */
+.assignments-list-card {
+    padding: 20px;
+    margin-top: 30px; /* Consistent spacing with other cards */
+}
+
+.assignments-list-card h2 {
+    font-size: 1.5em;
+    color: var(--text-light);
+    margin-bottom: 15px;
+}
+
+.assignments-list-card h3 {
+    font-size: 1.2em;
+    color: var(--accent-blue); /* Distinct color for subheadings */
+    margin-top: 25px;
+    margin-bottom: 15px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    padding-bottom: 8px;
+}
+
+.assignments-list-card h3:first-of-type {
+    margin-top: 0; /* No top margin for the first subheading */
+}
+
+.assignments-list-card ul {
+    list-style: none;
+    padding: 0;
+    max-height: 200px; /* Set a max height for scrolling */
+    overflow-y: auto; /* Enable vertical scrolling */
+    padding-right: 5px; /* Add some padding for scrollbar visibility */
+    -webkit-overflow-scrolling: touch; /* For smooth scrolling on iOS */
+}
+
+/* Custom scrollbar for assignments lists */
+.assignments-list-card ul::-webkit-scrollbar {
+    width: 6px;
+}
+
+.assignments-list-card ul::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+.assignments-list-card ul::-webkit-scrollbar-thumb {
+    background: linear-gradient(180deg, rgba(138, 43, 226, 0.4), rgba(138, 43, 226, 0.8)); /* Accent purple gradient */
+    border-radius: 6px;
+}
+
+.assignments-list-card ul::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(180deg, rgba(138, 43, 226, 0.6), rgba(138, 43, 226, 1));
+}
+
+/* Firefox scrollbar */
+.assignments-list-card ul {
+    scrollbar-width: thin;
+    scrollbar-color: rgba(138, 43, 226, 0.6) transparent;
+}
+
+.assignments-list-card li {
+    margin-bottom: 10px;
+}
+
+.assignments-list-card a {
+    display: block;
+    background-color: rgba(255, 255, 255, 0.05);
+    padding: 12px 15px;
+    border-radius: 8px;
+    color: var(--text-light);
+    text-decoration: none;
+    transition: all 0.2s ease;
+    border-left: 4px solid var(--accent-purple); /* Accent color for assignments */
+    font-size: 0.95em;
+}
+
+.assignments-list-card a:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+    border-left-color: var(--accent-blue); /* Change accent on hover */
+    transform: translateX(3px); /* Slight hover effect */
+}
+
+.assignments-list-card #live-assignments-list a {
+    border-left-color: var(--accent-green); /* Green for live assignments */
+}
+
+.assignments-list-card #live-assignments-list a:hover {
+    border-left-color: var(--accent-blue);
+}
+
+.assignments-list-card #past-assignments-list a {
+    border-left-color: var(--accent-yellow); /* Yellow for past assignments */
+    opacity: 0.8; /* Slightly dim past assignments */
+}
+
+.assignments-list-card #past-assignments-list a:hover {
+    border-left-color: var(--accent-blue);
+    opacity: 1;
+}
+
+.assignments-list-card li:last-child {
+    margin-bottom: 0;
+}
+
+.full-width-input {
+    width: calc(100% - 20px);
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    background-color: rgba(255, 255, 255, 0.05);
+    color: var(--text-light);
+    font-size: 1em;
+}
+
+.full-width-input::placeholder {
+    color: var(--text-dark-gray);
+}
+
+.form-actions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.btn {
+    padding: 10px 20px;
+    border-radius: 8px;
+    border: none;
+    font-size: 1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.btn-submit {
+    background-color: var(--accent-purple);
+    color: var(--text-light);
+}
+
+.btn-submit:hover {
+    background-color: #7b24cc; /* Slightly darker purple */
+}
+
+.btn-upload {
+    background-color: var(--accent-blue);
+    color: var(--text-light);
+}
+
+.btn-upload:hover {
+    background-color: #0099e6; /* Slightly darker blue */
+}
+
+.leaderboard-card table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 15px;
+}
+
+.leaderboard-card th,
+.leaderboard-card td {
+    padding: 12px 15px;
+    text-align: left;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.leaderboard-card th {
+    background-color: rgba(255, 255, 255, 0.05);
+    color: var(--text-light);
+    font-weight: bold;
+}
+
+.leaderboard-card td {
+    color: var(--text-dark-gray);
+}
+
+.leaderboard-card tbody tr:hover {
+    background-color: rgba(255, 255, 255, 0.02);
+}
+
+/* Responsive Adjustments for Instructor Dashboard */
+@media (max-width: 992px) {
+    .instructor-main-content {
+        flex-direction: column;
+    }
+
+    .instructor-sidebar {
+        margin-right: 0;
+        min-width: unset;
+        width: 100%;
+    }
+}
+
+/* Analytics Card */
+.analytics-card canvas {
+    max-height: 300px;
+    width: 100% !important;
+    height: auto !important;
+}
+
+/* Flatpickr Styling Adjustments */
+.flatpickr-calendar {
+    background-color: var(--card-background);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    color: var(--text-light);
+}
+
+.flatpickr-months .flatpickr-month {
+    background-color: var(--card-background);
+    color: var(--text-light);
+}
+
+.flatpickr-current-month .flatpickr-monthDropdown-months .flatpickr-month, 
+.flatpickr-current-month .numInputWrapper {
+    color: var(--text-light);
+}
+
+.flatpickr-day {
+    color: var(--text-dark-gray);
+}
+
+.flatpickr-day.today {
+    border-color: var(--accent-purple);
+}
+
+.flatpickr-day.selected, .flatpickr-day.startRange, .flatpickr-day.endRange, .flatpickr-day.nextMonthDay.selected, .flatpickr-day.prevMonthDay.selected {
+    background-color: var(--accent-blue);
+    border-color: var(--accent-blue);
+    color: var(--text-light);
+}
+
+.flatpickr-day.selected:hover, .flatpickr-day.startRange:hover, .flatpickr-day.endRange:hover, .flatpickr-day.nextMonthDay.selected:hover, .flatpickr-day.prevMonthDay.selected:hover {
+    background-color: #0099e6;
+    border-color: #0099e6;
+}
+
+.flatpickr-arrow {
+    color: var(--text-light);
+}
+
+.flatpickr-next-month:hover svg, .flatpickr-prev-month:hover svg {
+    fill: var(--accent-purple);
+}
+
+.flatpickr-weekday {
+    color: var(--text-light);
+}
+
+.date-picker {
+    cursor: pointer;
+}

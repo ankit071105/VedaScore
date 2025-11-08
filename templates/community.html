@@ -1,0 +1,789 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Community - VedaScore</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6a0dad;
+            --primary-light: #8b5cf6;
+            --secondary: #1e293b;
+            --dark: #0b0f19;
+            --darker: #0a0e17;
+            --light: #e0e6f0;
+            --gray: #3b4455;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --info: #3b82f6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--dark);
+            color: var(--light);
+            min-height: 100vh;
+        }
+
+        .community-container {
+            display: grid;
+            grid-template-columns: 280px 1fr;
+            grid-template-rows: 70px 1fr;
+            grid-template-areas:
+                "sidebar header"
+                "sidebar main";
+            min-height: 100vh;
+        }
+
+        /* Header */
+        .header {
+            grid-area: header;
+            background-color: var(--darker);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 30px;
+            border-bottom: 1px solid var(--gray);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .logo h1 {
+            font-size: 24px;
+            background: linear-gradient(90deg, var(--primary), var(--primary-light));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+            font-weight: 700;
+        }
+
+        .logo i {
+            color: var(--primary);
+            font-size: 28px;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-avatar {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+            border: 2px solid var(--primary-light);
+        }
+
+        /* Sidebar */
+        .sidebar {
+            grid-area: sidebar;
+            background-color: var(--darker);
+            border-right: 1px solid var(--gray);
+            padding: 20px 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .sidebar-section {
+            margin-bottom: 30px;
+            padding: 0 20px;
+        }
+
+        .sidebar-title {
+            font-size: 14px;
+            color: #a0aec0;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-weight: 600;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+        }
+
+        .sidebar-menu li {
+            margin-bottom: 8px;
+        }
+
+        .sidebar-menu a {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 12px 15px;
+            border-radius: 8px;
+            color: var(--light);
+            text-decoration: none;
+            transition: all 0.3s ease;
+        }
+
+        .sidebar-menu a:hover, .sidebar-menu a.active {
+            background-color: rgba(106, 13, 173, 0.2);
+            color: var(--primary-light);
+        }
+
+        .sidebar-menu i {
+            width: 20px;
+            text-align: center;
+            font-size: 18px;
+        }
+
+        /* Main Content */
+        .main-content {
+            grid-area: main;
+            padding: 30px;
+            overflow-y: auto;
+            background-color: var(--dark);
+        }
+
+        .welcome-section {
+            margin-bottom: 30px;
+        }
+
+        .welcome-card {
+            background: linear-gradient(135deg, var(--secondary), var(--darker));
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            border-left: 4px solid var(--primary);
+        }
+
+        .welcome-card h2 {
+            font-size: 24px;
+            margin-bottom: 10px;
+            color: white;
+        }
+
+        .welcome-card p {
+            color: #a0aec0;
+            line-height: 1.6;
+        }
+
+        /* Create Post */
+        .create-post-card {
+            background-color: var(--darker);
+            border-radius: 12px;
+            padding: 25px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--gray);
+        }
+
+        .create-post-card h3 {
+            font-size: 18px;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        .post-form input, .post-form textarea {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid var(--gray);
+            border-radius: 8px;
+            background-color: var(--secondary);
+            color: var(--light);
+            font-size: 14px;
+        }
+
+        .post-form textarea {
+            min-height: 100px;
+            resize: vertical;
+        }
+
+        .post-form button {
+            background-color: var(--primary);
+            color: white;
+            padding: 12px 24px;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: background-color 0.3s ease;
+        }
+
+        .post-form button:hover {
+            background-color: var(--primary-light);
+        }
+
+        /* Posts Feed */
+        .posts-feed {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .post-card {
+            background-color: var(--darker);
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            border: 1px solid var(--gray);
+            transition: transform 0.2s ease;
+        }
+
+        .post-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .post-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .post-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            margin-right: 12px;
+        }
+
+        .post-user-info {
+            flex: 1;
+        }
+
+        .post-user-name {
+            font-weight: 600;
+            color: var(--light);
+        }
+
+        .post-time {
+            font-size: 12px;
+            color: #a0aec0;
+        }
+
+        .post-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: white;
+            margin-bottom: 10px;
+        }
+
+        .post-content {
+            color: #a0aec0;
+            line-height: 1.6;
+            margin-bottom: 15px;
+        }
+
+        .post-actions {
+            display: flex;
+            gap: 20px;
+            border-top: 1px solid var(--gray);
+            padding-top: 15px;
+        }
+
+        .post-action {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background: none;
+            border: none;
+            color: #a0aec0;
+            cursor: pointer;
+            transition: color 0.3s ease;
+            font-size: 14px;
+        }
+
+        .post-action:hover {
+            color: var(--primary-light);
+        }
+
+        .post-action.liked {
+            color: var(--danger);
+        }
+
+        .post-action.liked i {
+            color: var(--danger);
+        }
+
+        /* Comments Section */
+        .comments-section {
+            margin-top: 20px;
+            padding-top: 20px;
+            border-top: 1px solid var(--gray);
+        }
+
+        .comment-form {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .comment-input {
+            flex: 1;
+            padding: 10px;
+            border: 1px solid var(--gray);
+            border-radius: 8px;
+            background-color: var(--secondary);
+            color: var(--light);
+        }
+
+        .comment-submit {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            border-radius: 8px;
+            padding: 10px 15px;
+            cursor: pointer;
+        }
+
+        .comment {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+            padding: 10px;
+            background-color: var(--secondary);
+            border-radius: 8px;
+        }
+
+        .comment-avatar {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, var(--info), var(--primary-light));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 12px;
+            flex-shrink: 0;
+        }
+
+        .comment-content {
+            flex: 1;
+        }
+
+        .comment-user {
+            font-weight: 600;
+            color: var(--light);
+            font-size: 14px;
+        }
+
+        .comment-text {
+            color: #a0aec0;
+            font-size: 14px;
+            margin-top: 5px;
+        }
+
+        .comment-time {
+            font-size: 11px;
+            color: #6b7280;
+            margin-top: 5px;
+        }
+
+        .load-more {
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .load-more-btn {
+            background-color: var(--secondary);
+            color: var(--light);
+            border: 1px solid var(--gray);
+            padding: 10px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .load-more-btn:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+    </style>
+</head>
+<body>
+    <div class="community-container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <i class="fas fa-code"></i>
+                <h1>VedaScore</h1>
+            </div>
+            <div class="user-profile">
+                <div class="user-info">
+                    <div class="user-name">{{ user.name }}</div>
+                    <div class="user-role">{{ user.role|title }}</div>
+                </div>
+                <div class="user-avatar">{{ user.name[0] }}{{ user.name.split(' ')[1][0] if user.name.split(' ')|length > 1 else user.name[1] if user.name|length > 1 else user.name[0] }}</div>
+                <a href="{{ url_for('logout') }}" class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i>
+                </a>
+            </div>
+        </header>
+
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-section">
+                <h3 class="sidebar-title">Navigation</h3>
+                <ul class="sidebar-menu">
+                    <li><a href="{{ url_for('student_dashboard') if user.role == 'student' else url_for('instructor_dashboard') }}"><i class="fas fa-home"></i> Dashboard</a></li>
+                    <li><a href="#" class="active"><i class="fas fa-users"></i> Community</a></li>
+                    <li><a href="#"><i class="fas fa-tasks"></i> Assignments</a></li>
+                    <li><a href="#"><i class="fas fa-chart-line"></i> Progress</a></li>
+                </ul>
+            </div>
+
+            <div class="sidebar-section">
+                <h3 class="sidebar-title">Community Rules</h3>
+                <div style="font-size: 12px; color: #a0aec0; line-height: 1.4;">
+                    <p>• Be respectful and constructive</p>
+                    <p>• Share knowledge and help others</p>
+                    <p>• No cheating or assignment sharing</p>
+                    <p>• All posts are AI-moderated</p>
+                </div>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="welcome-section">
+                <div class="welcome-card">
+                    <h2>Welcome to Community!</h2>
+                    <p>Connect with fellow learners, share knowledge, ask questions, and grow together. All content is AI-moderated to maintain quality.</p>
+                </div>
+            </div>
+
+            <!-- Create Post -->
+            <div class="create-post-card">
+                <h3>Create a Post</h3>
+                <form class="post-form" id="create-post-form">
+                    <input type="text" id="post-title" placeholder="Post Title" required>
+                    <textarea id="post-content" placeholder="What's on your mind? Share your coding questions, project ideas, or learning insights..." required></textarea>
+                    <button type="submit">Create Post</button>
+                </form>
+            </div>
+
+            <!-- Posts Feed -->
+            <div class="posts-feed" id="posts-feed">
+                <!-- Posts will be loaded here dynamically -->
+                <div style="text-align: center; padding: 40px; color: #a0aec0;">
+                    <i class="fas fa-spinner fa-spin"></i> Loading posts...
+                </div>
+            </div>
+
+            <div class="load-more">
+                <button class="load-more-btn" id="load-more-btn" style="display: none;">Load More Posts</button>
+            </div>
+        </main>
+    </div>
+
+    <script>
+        let currentPage = 1;
+        let loading = false;
+        let hasMore = true;
+
+        // DOM Elements
+        const postsFeed = document.getElementById('posts-feed');
+        const loadMoreBtn = document.getElementById('load-more-btn');
+        const createPostForm = document.getElementById('create-post-form');
+
+        // Load posts
+        async function loadPosts(page = 1, append = false) {
+            if (loading) return;
+            
+            loading = true;
+            if (!append) {
+                postsFeed.innerHTML = '<div style="text-align: center; padding: 40px; color: #a0aec0;"><i class="fas fa-spinner fa-spin"></i> Loading posts...</div>';
+            }
+
+            try {
+                const response = await fetch(`/api/community/posts?page=${page}`);
+                const data = await response.json();
+
+                if (response.ok) {
+                    if (!append) {
+                        postsFeed.innerHTML = '';
+                    }
+
+                    if (data.posts.length === 0 && page === 1) {
+                        postsFeed.innerHTML = `
+                            <div style="text-align: center; padding: 40px; color: #a0aec0;">
+                                <i class="fas fa-comments" style="font-size: 48px; margin-bottom: 20px;"></i>
+                                <h3>No posts yet</h3>
+                                <p>Be the first to start a discussion!</p>
+                            </div>
+                        `;
+                        return;
+                    }
+
+                    data.posts.forEach(post => {
+                        const postElement = createPostElement(post);
+                        postsFeed.appendChild(postElement);
+                    });
+
+                    hasMore = data.has_next;
+                    loadMoreBtn.style.display = hasMore ? 'block' : 'none';
+                    currentPage = page;
+
+                } else {
+                    throw new Error(data.error || 'Failed to load posts');
+                }
+            } catch (error) {
+                console.error('Error loading posts:', error);
+                if (!append) {
+                    postsFeed.innerHTML = `
+                        <div style="text-align: center; padding: 40px; color: var(--danger);">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <p>Error loading posts: ${error.message}</p>
+                        </div>
+                    `;
+                }
+            } finally {
+                loading = false;
+            }
+        }
+
+        // Create post element
+        function createPostElement(post) {
+            const postDiv = document.createElement('div');
+            postDiv.className = 'post-card';
+            postDiv.innerHTML = `
+                <div class="post-header">
+                    <div class="post-avatar">${post.user_avatar}</div>
+                    <div class="post-user-info">
+                        <div class="post-user-name">${post.user_name}</div>
+                        <div class="post-time">${post.created_at}</div>
+                    </div>
+                </div>
+                <div class="post-title">${post.title}</div>
+                <div class="post-content">${post.content}</div>
+                <div class="post-actions">
+                    <button class="post-action like-btn ${post.user_liked ? 'liked' : ''}" data-post-id="${post.id}">
+                        <i class="fas fa-heart"></i>
+                        <span class="like-count">${post.likes_count}</span>
+                    </button>
+                    <button class="post-action comment-btn" data-post-id="${post.id}">
+                        <i class="fas fa-comment"></i>
+                        <span class="comment-count">${post.comments_count}</span>
+                    </button>
+                </div>
+                <div class="comments-section" id="comments-${post.id}" style="display: none;">
+                    <div class="comment-form">
+                        <input type="text" class="comment-input" placeholder="Write a comment..." data-post-id="${post.id}">
+                        <button class="comment-submit" data-post-id="${post.id}">Post</button>
+                    </div>
+                    <div class="comments-list" id="comments-list-${post.id}"></div>
+                </div>
+            `;
+
+            // Add event listeners
+            const likeBtn = postDiv.querySelector('.like-btn');
+            const commentBtn = postDiv.querySelector('.comment-btn');
+            const commentInput = postDiv.querySelector('.comment-input');
+            const commentSubmit = postDiv.querySelector('.comment-submit');
+
+            likeBtn.addEventListener('click', () => handleLike(post.id, likeBtn));
+            commentBtn.addEventListener('click', () => toggleComments(post.id));
+            commentSubmit.addEventListener('click', () => handleComment(post.id, commentInput));
+
+            return postDiv;
+        }
+
+        // Handle like
+        async function handleLike(postId, likeBtn) {
+            try {
+                const response = await fetch(`/api/community/posts/${postId}/like`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    const likeCount = likeBtn.querySelector('.like-count');
+                    likeCount.textContent = data.likes_count;
+                    
+                    if (data.liked) {
+                        likeBtn.classList.add('liked');
+                    } else {
+                        likeBtn.classList.remove('liked');
+                    }
+                } else {
+                    alert('Error liking post: ' + data.error);
+                }
+            } catch (error) {
+                console.error('Error liking post:', error);
+                alert('Error liking post');
+            }
+        }
+
+        // Toggle comments
+        async function toggleComments(postId) {
+            const commentsSection = document.getElementById(`comments-${postId}`);
+            const commentsList = document.getElementById(`comments-list-${postId}`);
+
+            if (commentsSection.style.display === 'none') {
+                // Load comments
+                try {
+                    const response = await fetch(`/api/community/posts/${postId}/comments`);
+                    const data = await response.json();
+
+                    if (response.ok) {
+                        commentsList.innerHTML = '';
+                        
+                        if (data.comments.length === 0) {
+                            commentsList.innerHTML = '<div style="text-align: center; color: #a0aec0; padding: 20px;">No comments yet</div>';
+                        } else {
+                            data.comments.forEach(comment => {
+                                const commentDiv = document.createElement('div');
+                                commentDiv.className = 'comment';
+                                commentDiv.innerHTML = `
+                                    <div class="comment-avatar">${comment.user_avatar}</div>
+                                    <div class="comment-content">
+                                        <div class="comment-user">${comment.user_name}</div>
+                                        <div class="comment-text">${comment.content}</div>
+                                        <div class="comment-time">${comment.created_at}</div>
+                                    </div>
+                                `;
+                                commentsList.appendChild(commentDiv);
+                            });
+                        }
+                    }
+                } catch (error) {
+                    console.error('Error loading comments:', error);
+                    commentsList.innerHTML = '<div style="color: var(--danger);">Error loading comments</div>';
+                }
+
+                commentsSection.style.display = 'block';
+            } else {
+                commentsSection.style.display = 'none';
+            }
+        }
+
+        // Handle comment
+        async function handleComment(postId, commentInput) {
+            const content = commentInput.value.trim();
+            
+            if (!content) {
+                alert('Please enter a comment');
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/community/posts/${postId}/comments`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ content })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    commentInput.value = '';
+                    // Refresh comments
+                    toggleComments(postId);
+                    toggleComments(postId); // Toggle twice to refresh
+                    
+                    // Update comment count
+                    const commentBtn = document.querySelector(`.comment-btn[data-post-id="${postId}"]`);
+                    const commentCount = commentBtn.querySelector('.comment-count');
+                    commentCount.textContent = parseInt(commentCount.textContent) + 1;
+                    
+                } else {
+                    alert('Error posting comment: ' + data.error);
+                }
+            } catch (error) {
+                console.error('Error posting comment:', error);
+                alert('Error posting comment');
+            }
+        }
+
+        // Create new post
+        createPostForm.addEventListener('submit', async (e) => {
+            e.preventDefault();
+            
+            const title = document.getElementById('post-title').value.trim();
+            const content = document.getElementById('post-content').value.trim();
+
+            if (!title || !content) {
+                alert('Please fill in both title and content');
+                return;
+            }
+
+            const submitBtn = createPostForm.querySelector('button');
+            submitBtn.disabled = true;
+            submitBtn.textContent = 'Posting...';
+
+            try {
+                const response = await fetch('/api/community/posts', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        title,
+                        content,
+                        post_type: 'text'
+                    })
+                });
+
+                const data = await response.json();
+
+                if (response.ok) {
+                    // Clear form
+                    document.getElementById('post-title').value = '';
+                    document.getElementById('post-content').value = '';
+                    
+                    // Reload posts
+                    loadPosts(1, false);
+                    
+                    alert('Post created successfully! ' + (data.moderation_status === 'FLAGGED' ? 'Your post is under review.' : ''));
+                } else {
+                    alert('Error creating post: ' + data.error);
+                }
+            } catch (error) {
+                console.error('Error creating post:', error);
+                alert('Error creating post');
+            } finally {
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Create Post';
+            }
+        });
+
+        // Load more posts
+        loadMoreBtn.addEventListener('click', () => {
+            if (hasMore && !loading) {
+                loadPosts(currentPage + 1, true);
+            }
+        });
+
+        // Initial load
+        loadPosts(1);
+    </script>
+</body>
+</html>

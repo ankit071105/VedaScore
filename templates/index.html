@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Face Recognition Auth</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="background-elements">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+    <div class="container">
+        <h1>VedaScore</h1>
+        <h2 style="color: #e0e6f0; text-align: center; margin-bottom: 20px;">Face Recognition Auth</h2>
+        <video id="video" width="640" height="480" autoplay></video>
+        <canvas id="canvas" width="640" height="480" style="display:none;"></canvas>
+
+        <div id="initial-prompt">
+            <button type="button" id="start-verification">Start Verification</button>
+        </div>
+
+        <div id="registration-section" style="display:none;">
+            <form id="registration-form">
+                <input type="text" id="name" placeholder="Name" required>
+                <input type="email" id="email" placeholder="Email" required>
+                <input type="password" id="password" placeholder="Password" required>
+                <button type="button" id="capture-register">Capture & Register</button>
+            </form>
+        </div>
+
+        <div id="message-section" style="display:none;">
+            <p id="status-message"></p>
+            <!-- ADD GO TO DASHBOARD BUTTON -->
+            <div id="dashboard-button-section" style="display:none; text-align: center; margin-top: 20px;">
+                <button type="button" id="go-to-dashboard" style="background-color: #6a0dad; color: white; padding: 12px 24px; border: none; border-radius: 8px; cursor: pointer; font-size: 16px;">
+                    <i class="fas fa-tachometer-alt"></i> Go to Dashboard
+                </button>
+                <button type="button" id="try-again" style="background-color: #3b4455; color: white; padding: 12px 24px; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; margin-left: 10px;">
+                    <i class="fas fa-redo"></i> Try Again
+                </button>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/js/all.min.js"></script>
+    <script>
+        const video = document.getElementById('video');
+        const canvas = document.getElementById('canvas');
+        const context = canvas.getContext('2d');
+        const startVerificationButton = document.getElementById('start-verification');
+        const captureRegisterButton = document.getElementById('capture-register');
+        const emailInput = document.getElementById('email');
+        const passwordInput = document.getElementById('password');
+        const nameInput = document.getElementById('name');
+        const initialPromptDiv = document.getElementById('initial-prompt');
+        const registrationSectionDiv = document.getElementById('registration-section');
+        const messageSectionDiv = document.getElementById('message-section');
+        const statusMessage = document.getElementById('status-message');
+        const dashboardButtonSection = document.getElementById('dashboard-button-section');
+        const goToDashboardButton = document.getElementById('go-to-dashboard');
+        const tryAgainButton = document.getElementById('try-again');
+
+        // Access webcam
+        navigator.mediaDevices.getUserMedia({ video: true })
+            .then(stream => {
+                video.srcObject = stream;
+            })
+            .catch(err => {
+                console.error("Error accessing webcam: ", err);
+                statusMessage.innerText = "Error: Could not access webcam. Please ensure you have a webcam connected and have granted permission.";
+                messageSectionDiv.style.display = 'block';
+            });
+
+        startVerificationButton.addEventListener('click', () => {
+            context.drawImage(video, 0, 0, 640, 480);
+            const imageData = canvas.toDataURL('image/jpeg');
+
+            fetch('/initial_verify', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ image: imageData })
+            })
+            .then(response => response.json())
+            .then(data => {
+                initialPromptDiv.style.display = 'none';
+                messageSectionDiv.style.display = 'block';
+                if (data.recognized) {
+                    statusMessage.innerText = `Welcome back, ${data.name}! You are automatically verified.`;
+                    dashboardButtonSection.style.display = 'block';
+                } else {
+                    statusMessage.innerText = "New face detected. Kindly register.";
+                    registrationSectionDiv.style.display = 'block';
+                }
+            })
+            .catch(error => {
+                console.error('Error during initial verification:', error);
+                statusMessage.innerText = "Error during verification.";
+                messageSectionDiv.style.display = 'block';
+            });
+        });
+
+        captureRegisterButton.addEventListener('click', () => {
+            context.drawImage(video, 0, 0, 640, 480);
+            const imageData = canvas.toDataURL('image/jpeg');
+            const email = emailInput.value;
+            const password = passwordInput.value;
+            const name = nameInput.value;
+
+            fetch('/register', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name, email, password, image: imageData })
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+                if (data.message === 'Registration successful!') {
+                    registrationSectionDiv.style.display = 'none';
+                    statusMessage.innerText = 'Registration successful! You can now use the "Start Verification" button to log in.';
+                    dashboardButtonSection.style.display = 'block';
+                }
+            })
+            .catch(error => {
+                console.error('Error during registration:', error);
+                alert('Error during registration.');
+            });
+        });
+
+        // Go to Dashboard button event
+        goToDashboardButton.addEventListener('click', () => {
+            window.location.href = "{{ url_for('student_dashboard') }}";
+        });
+
+        // Try Again button event
+        tryAgainButton.addEventListener('click', () => {
+            location.reload();
+        });
+    </script>
+</body>
+</html>

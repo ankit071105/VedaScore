@@ -1,0 +1,703 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Assignment Details - VedaScore</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #6a0dad;
+            --primary-light: #8b5cf6;
+            --secondary: #1e293b;
+            --dark: #0b0f19;
+            --darker: #0a0e17;
+            --light: #e0e6f0;
+            --gray: #3b4455;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+            --info: #3b82f6;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+
+        body {
+            background-color: var(--dark);
+            color: var(--light);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 30px;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            background-color: var(--darker);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            border: 1px solid var(--gray);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 30px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--gray);
+        }
+
+        .header h1 {
+            font-size: 28px;
+            color: var(--light);
+        }
+
+        .header .back-button {
+            background-color: var(--secondary);
+            color: var(--light);
+            padding: 10px 20px;
+            border-radius: 8px;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: background-color 0.3s ease;
+        }
+
+        .header .back-button:hover {
+            background-color: var(--gray);
+        }
+
+        .assignment-details-section {
+            margin-bottom: 30px;
+        }
+
+        .assignment-details-section h2 {
+            font-size: 22px;
+            color: var(--primary-light);
+            margin-bottom: 15px;
+        }
+
+        .detail-item {
+            margin-bottom: 10px;
+        }
+
+        .detail-item strong {
+            color: var(--light);
+            margin-right: 5px;
+        }
+
+        .code-editor-section {
+            margin-bottom: 30px;
+        }
+
+        .code-editor-section h2 {
+            font-size: 22px;
+            color: var(--primary-light);
+            margin-bottom: 15px;
+        }
+
+        .code-editor-container {
+            background-color: #1a1f2e;
+            border-radius: 8px;
+            overflow: hidden;
+            border: 1px solid var(--gray);
+        }
+
+        .editor-toolbar {
+            background-color: #252a3a;
+            padding: 10px 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--gray);
+        }
+
+        .editor-actions {
+            display: flex;
+            gap: 10px; /* This will add a gap between buttons */
+        }
+
+        .editor-actions .btn {
+            padding: 8px 16px;
+            border-radius: 6px;
+            border: none;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            background-color: var(--primary);
+            color: white;
+        }
+
+        .editor-actions .btn:hover {
+            background-color: var(--primary-light);
+        }
+
+        .editor-content {
+            padding: 20px;
+            min-height: 300px;
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+            color: #e0e6f0;
+            white-space: pre-wrap;
+            outline: none;
+            overflow: auto;
+            max-height: 400px;
+            tab-size: 4;
+            -moz-tab-size: 4;
+        }
+
+        .editor-content:empty:before {
+            content: "// Write your solution here...";
+            color: #6b7280;
+        }
+
+        .test-cases-section, .output-section, .test-results-section {
+            margin-bottom: 30px;
+        }
+
+        .test-cases-section h2, .output-section h2, .test-results-section h2 {
+            font-size: 22px;
+            color: var(--primary-light);
+            margin-bottom: 15px;
+        }
+
+        .content-box {
+            background-color: #1a1f2e;
+            border-radius: 8px;
+            padding: 20px;
+            border: 1px solid var(--gray);
+            font-family: 'Courier New', monospace;
+            font-size: 14px;
+            line-height: 1.5;
+            color: #e0e6f0;
+            white-space: pre-wrap;
+            overflow: auto;
+            max-height: 300px;
+        }
+
+        .test-case-item {
+            margin-bottom: 15px;
+            padding: 10px;
+            border-radius: 6px;
+            background-color: var(--secondary);
+            border: 1px solid var(--gray);
+        }
+
+        .test-case-item.passed {
+            border-left: 4px solid var(--success);
+        }
+
+        .test-case-item.failed {
+            border-left: 4px solid var(--danger);
+        }
+
+        .test-case-item pre {
+            background-color: var(--dark);
+            padding: 8px;
+            border-radius: 4px;
+            margin-top: 5px;
+            overflow-x: auto;
+        }
+
+        .test-results-summary {
+            margin-top: 15px;
+            font-weight: bold;
+            color: var(--light);
+        }
+
+        .test-results-summary.passed {
+            color: var(--success);
+        }
+
+        .test-results-summary.failed {
+            color: var(--danger);
+        }
+
+        .tab-menu {
+            display: flex;
+            margin-bottom: 20px;
+            border-bottom: 1px solid var(--gray);
+        }
+
+        .tab-button {
+            background-color: transparent;
+            border: none;
+            padding: 10px 20px;
+            color: var(--light);
+            font-size: 16px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-bottom: 2px solid transparent;
+        }
+
+        .tab-button:hover {
+            color: var(--primary-light);
+        }
+
+        .tab-button.active {
+            color: var(--primary);
+            border-bottom: 2px solid var(--primary);
+            font-weight: 600;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>{{ assignment.title }}</h1>
+            <a href="{{ url_for('student_dashboard') }}" class="back-button">
+                <i class="fas fa-arrow-left"></i> Back to Dashboard
+            </a>
+        </div>
+
+        <div class="assignment-details-section">
+            <h2>Assignment Details</h2>
+            <div class="detail-item">
+                <strong>Description:</strong> {{ assignment.description }}
+            </div>
+            <div class="detail-item">
+                <strong>Due Date:</strong> {{ assignment.due_date.strftime('%Y-%m-%d %H:%M') if assignment.due_date else 'N/A' }}
+            </div>
+        </div>
+
+        <div class="code-editor-section">
+            <h2>Your Solution</h2>
+            <div class="code-editor-container">
+                <div class="editor-toolbar">
+                    <div class="editor-actions">
+                        <button class="btn" id="run-code-local-btn">
+                            <i class="fas fa-play"></i> Run Code
+                        </button>
+                        <button class="btn" id="submit-assignment-btn">
+                            <i class="fas fa-paper-plane"></i> Submit Assignment
+                        </button>
+                    </div>
+                </div>
+                <div class="editor-content" contenteditable="true" id="code-editor"></div>
+            </div>
+        </div>
+
+        <div class="tab-menu">
+            <button class="tab-button active" data-tab="output">Output</button>
+            <button class="tab-button" data-tab="tests">Test Results</button>
+            <button class="tab-button" data-tab="provided-tests" id="provided-tests-tab">
+                Provided Test Cases
+                <span id="test-cases-badge" style="display: none; margin-left: 8px; background-color: var(--primary); color: white; padding: 2px 8px; border-radius: 12px; font-size: 12px; font-weight: bold;"></span>
+            </button>
+        </div>
+
+        <div id="output" class="tab-content active">
+            <div class="output-section">
+                <h2>Output</h2>
+                <div class="content-box" id="output-container">Output will appear here...</div>
+            </div>
+        </div>
+
+        <div id="tests" class="tab-content">
+            <div class="test-results-section">
+                <h2>Test Results</h2>
+                <div class="content-box" id="test-results-container">
+                    <div id="test-summary" class="test-results-summary"></div>
+                    <div id="individual-test-results">No test results yet.</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="provided-tests" class="tab-content">
+            <div class="test-cases-section">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <h2>Provided Test Cases</h2>
+                    <div id="test-cases-summary" style="color: var(--primary-light); font-size: 14px; font-weight: 600;">
+                        <i class="fas fa-spinner fa-spin"></i> Loading...
+                    </div>
+                </div>
+                <div class="content-box" id="provided-test-cases-container" style="min-height: 200px;">No test cases provided for this assignment.</div>
+            </div>
+        </div>
+
+        <div id="ai-feedback" class="output-section">
+            <h2>AI Feedback</h2>
+            <div class="content-box" id="ai-feedback-container"><i class="fas fa-info-circle"></i> Submit your code to get AI feedback.</div>
+        </div>
+
+        <div id="imp-quiz" class="output-section">
+            <h2>Important Questions / Quiz</h2>
+            <div class="content-box" id="imp-quiz-container"><i class="fas fa-info-circle"></i> Submit your code to get important questions and quiz.</div>
+        </div>
+    </div>
+
+    <script>
+        const assignmentId = {{ assignment.id }};
+        const codeEditor = document.getElementById('code-editor');
+        const runCodeLocalBtn = document.getElementById('run-code-local-btn');
+        const submitAssignmentBtn = document.getElementById('submit-assignment-btn');
+        const outputContainer = document.getElementById('output-container');
+        const providedTestCasesContainer = document.getElementById('provided-test-cases-container');
+        const testResultsContainer = document.getElementById('test-results-container');
+        const testSummary = document.getElementById('test-summary');
+        const individualTestResults = document.getElementById('individual-test-results');
+        const aiFeedbackContainer = document.getElementById('ai-feedback-container');
+        const impQuizContainer = document.getElementById('imp-quiz-container');
+
+        let currentAssignmentDescription = ''; // Global variable to store assignment description
+
+        // Tab functionality (no changes needed for AI Feedback/Imp Quiz as they are no longer tabs)
+        document.querySelectorAll('.tab-button').forEach(button => {
+            button.addEventListener('click', () => {
+                document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
+                document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+
+                button.classList.add('active');
+                document.getElementById(button.dataset.tab).classList.add('active');
+            });
+        });
+
+        // Helper function to escape HTML
+        function escapeHtml(text) {
+            const div = document.createElement('div');
+            div.textContent = text;
+            return div.innerHTML;
+        }
+
+        // Function to display test results
+        function displayTestResults(testResults, passedCount, totalTests) {
+            if (!testResults || !Array.isArray(testResults)) {
+                testSummary.textContent = "No test results available.";
+                individualTestResults.textContent = "Test results could not be displayed.";
+                return;
+            }
+
+            // Display summary
+            const passRate = totalTests > 0 ? Math.round((passedCount / totalTests) * 100) : 0;
+            testSummary.textContent = `Tests Passed: ${passedCount}/${totalTests} (${passRate}%)`;
+            testSummary.className = `test-results-summary ${passedCount === totalTests ? 'passed' : 'failed'}`;
+
+            // Display individual test results
+            individualTestResults.innerHTML = testResults.map(test => {
+                const statusClass = test.passed ? 'passed' : 'failed';
+                return `
+                    <div class="test-case-item ${statusClass}">
+                        <strong>Test Case ${test.case_num}:</strong>
+                        <p>Input: <pre>${test.input || 'N/A'}</pre></p>
+                        <p>Expected: <pre>${test.expected || 'N/A'}</pre></p>
+                        <p>Actual: <pre>${test.actual || 'N/A'}</pre></p>
+                        <p>Status: <strong>${test.passed ? 'PASSED' : 'FAILED'}</strong></p>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        // Display provided test cases
+        async function loadAssignmentDetails() {
+            try {
+                // Fetch the assignment details to get the test cases
+                const response = await fetch(`/api/assignment/${assignmentId}`);
+                const data = await response.json();
+
+                if (response.ok && data.assignment) {
+                    currentAssignmentDescription = data.assignment.description; // Store description globally
+
+                    let testCases = [];
+                    
+                    // Try to parse test cases
+                    try {
+                        if (data.assignment.test_cases) {
+                            if (typeof data.assignment.test_cases === 'string') {
+                                testCases = JSON.parse(data.assignment.test_cases);
+                            } else if (Array.isArray(data.assignment.test_cases)) {
+                                testCases = data.assignment.test_cases;
+                            }
+                        }
+                    } catch (parseError) {
+                        console.error('Error parsing test cases:', parseError);
+                        providedTestCasesContainer.innerHTML = `
+                            <div style="color: var(--warning); padding: 15px; background-color: rgba(245, 158, 11, 0.1); border-radius: 8px; border-left: 4px solid var(--warning);">
+                                <strong>⚠️ Test Cases Format Error:</strong><br>
+                                The test cases could not be parsed. Please contact your instructor.<br>
+                                <small>Error: ${parseError.message}</small>
+                            </div>
+                        `;
+                        
+                        // Update summary and hide badge on error
+                        const summary = document.getElementById('test-cases-summary');
+                        if (summary) {
+                            summary.innerHTML = `<i class="fas fa-exclamation-triangle" style="color: var(--warning);"></i> Format Error`;
+                        }
+                        const badge = document.getElementById('test-cases-badge');
+                        if (badge) {
+                            badge.style.display = 'none';
+                        }
+                        loadPreviousSubmission(currentAssignmentDescription); // Call here after description is set
+                        return;
+                    }
+                    
+                    if (testCases && testCases.length > 0) {
+                        // Show badge with count
+                        const badge = document.getElementById('test-cases-badge');
+                        if (badge) {
+                            badge.textContent = testCases.length;
+                            badge.style.display = 'inline-block';
+                        }
+                        
+                        // Update summary
+                        const summary = document.getElementById('test-cases-summary');
+                        if (summary) {
+                            summary.innerHTML = `<i class="fas fa-check-circle" style="color: var(--success);"></i> ${testCases.length} test case${testCases.length > 1 ? 's' : ''} available`;
+                        }
+                        
+                        providedTestCasesContainer.innerHTML = testCases.map((tc, index) => {
+                            const input = tc.input !== undefined && tc.input !== null ? String(tc.input) : 'N/A';
+                            const expected = tc.expected_output !== undefined && tc.expected_output !== null ? String(tc.expected_output) : 'N/A';
+                            
+                            return `
+                                <div class="test-case-item" style="margin-bottom: 20px; padding: 15px; background-color: var(--secondary); border-radius: 8px; border-left: 4px solid var(--primary-light);">
+                                    <div style="display: flex; align-items: center; margin-bottom: 10px;">
+                                        <i class="fas fa-vial" style="color: var(--primary-light); margin-right: 10px;"></i>
+                                        <strong style="font-size: 16px; color: var(--light);">Test Case ${index + 1}</strong>
+                                    </div>
+                                    <div style="margin-bottom: 10px;">
+                                        <strong style="color: var(--primary-light);">Input:</strong>
+                                        <pre style="background-color: var(--dark); padding: 10px; border-radius: 4px; margin-top: 5px; overflow-x: auto; border: 1px solid var(--gray);">${escapeHtml(input)}</pre>
+                                    </div>
+                                    <div>
+                                        <strong style="color: var(--success);">Expected Output:</strong>
+                                        <pre style="background-color: var(--dark); padding: 10px; border-radius: 4px; margin-top: 5px; overflow-x: auto; border: 1px solid var(--gray);">${escapeHtml(expected)}</pre>
+                                    </div>
+                                </div>
+                            `;
+                        }).join('');
+                    } else {
+                        // Hide badge if no test cases
+                        const badge = document.getElementById('test-cases-badge');
+                        if (badge) {
+                            badge.style.display = 'none';
+                        }
+                        
+                        // Update summary
+                        const summary = document.getElementById('test-cases-summary');
+                        if (summary) {
+                            summary.innerHTML = `<i class="fas fa-exclamation-circle" style="color: var(--warning);"></i> No test cases available`;
+                        }
+                        
+                        providedTestCasesContainer.innerHTML = `
+                            <div style="padding: 20px; text-align: center; color: #a0aec0;">
+                                <i class="fas fa-info-circle" style="font-size: 24px; margin-bottom: 10px; display: block;"></i>
+                                <p>No test cases provided for this assignment.</p>
+                                <p style="font-size: 12px; margin-top: 10px;">Please contact your instructor if you believe this is an error.</p>
+                            </div>
+                        `;
+                    }
+                    loadPreviousSubmission(currentAssignmentDescription); // Call here after description is set
+
+                } else {
+                    console.error('Error loading assignment details:', data.error);
+                    
+                    // Update summary
+                    const summary = document.getElementById('test-cases-summary');
+                    if (summary) {
+                        summary.innerHTML = `<i class="fas fa-times-circle" style="color: var(--danger);"></i> Error loading`;
+                    }
+                    
+                    providedTestCasesContainer.innerHTML = `
+                        <div style="color: var(--danger); padding: 15px; background-color: rgba(239, 68, 68, 0.1); border-radius: 8px; border-left: 4px solid var(--danger);">
+                            <strong>❌ Error loading test cases:</strong><br>
+                            ${data.error || 'Unknown error'}
+                        </div>
+                    `;
+                    loadPreviousSubmission(currentAssignmentDescription); // Also call on error to load AI content if possible
+
+                }
+            } catch (error) {
+                console.error('Error fetching assignment details:', error);
+                
+                // Update summary
+                const summary = document.getElementById('test-cases-summary');
+                if (summary) {
+                    summary.innerHTML = `<i class="fas fa-times-circle" style="color: var(--danger);"></i> Network error`;
+                }
+                
+                providedTestCasesContainer.innerHTML = `
+                    <div style="color: var(--danger); padding: 15px; background-color: rgba(239, 68, 68, 0.1); border-radius: 8px; border-left: 4px solid var(--danger);">
+                        <strong>❌ Network Error:</strong><br>
+                        ${error.message}
+                    </div>
+                `;
+                loadPreviousSubmission(currentAssignmentDescription); // Also call on error to load AI content if possible
+            }
+        }
+
+        // Load previous submission
+        async function loadPreviousSubmission(assignmentDescription) {
+            try {
+                const response = await fetch(`/api/get_submission/${assignmentId}`);
+                const data = await response.json();
+
+                if (response.ok && data.submission) {
+                    codeEditor.textContent = data.submission.code;
+                    outputContainer.textContent = data.submission.output;
+                    displayTestResults(JSON.parse(data.submission.test_results), data.submission.passed_tests, data.submission.total_tests);
+                    // Load AI content based on the previous submission's code
+                    fetchAIContent(data.submission.code, assignmentId, assignmentDescription);
+                } else {
+                    codeEditor.textContent = "// Write your solution here...";
+                    outputContainer.textContent = "No previous submission found.";
+                    // Load AI content even without a previous submission, just using assignment description
+                    fetchAIContent("", assignmentId, assignmentDescription);
+                }
+            } catch (error) {
+                console.error('Error loading previous submission:', error);
+                outputContainer.textContent = `Error loading previous submission: ${error.message}`;
+                // Attempt to load AI content even on error, if description is available
+                if (assignmentDescription) {
+                    fetchAIContent("", assignmentId, assignmentDescription);
+                }
+            }
+        }
+
+        // Modified to handle both run code and submit assignment
+        async function executeCode(isSubmission) {
+            const code = codeEditor.textContent.trim();
+            
+            if (!code || code === "// Write your solution here...") {
+                outputContainer.textContent = "Please write some code before running.";
+                if (isSubmission) {
+                    testSummary.textContent = "No code to submit.";
+                    individualTestResults.textContent = "Please write your solution first.";
+                }
+                return;
+            }
+
+            if (isSubmission) {
+                outputContainer.textContent = "Running code and tests for submission...";
+            } else {
+                outputContainer.textContent = "Running code...";
+            }
+            individualTestResults.textContent = "";
+            testSummary.textContent = "";
+
+            try {
+                const response = await fetch('/api/run_assignment_code', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ code, assignment_id: assignmentId, is_submission: isSubmission })
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    outputContainer.textContent = result.output || "Code executed successfully (no output).";
+                    if (isSubmission) {
+                        if (result.test_results && result.test_results.length > 0) {
+                            displayTestResults(result.test_results, result.passed_count, result.total_tests);
+                            document.querySelector('.tab-button[data-tab="tests"]').click();
+
+                            // Call AI feedback and Imp/Quiz generation (now updates visible sections)
+                            fetchAIContent(code, assignmentId, currentAssignmentDescription);
+
+                            // Show success popup for submission
+                            alert('Assignment submitted successfully!');
+
+                        } else {
+                            testSummary.textContent = "No test results returned.";
+                            individualTestResults.textContent = "Test execution completed but no results were returned.";
+                        }
+                    } else {
+                        // For run code only, switch to output tab
+                        document.querySelector('.tab-button[data-tab="output"]').click();
+                    }
+                } else {
+                    const errorMsg = result.error || result.output || 'Unknown error';
+                    outputContainer.textContent = `Error: ${errorMsg}`;
+                    if (isSubmission) {
+                        testSummary.textContent = "Test execution failed.";
+                        testSummary.className = "test-results-summary failed";
+                        individualTestResults.textContent = errorMsg;
+                    }
+                }
+            } catch (error) {
+                const errorMsg = `Network Error: ${error.message}`;
+                outputContainer.textContent = errorMsg;
+                if (isSubmission) {
+                    testSummary.textContent = "Test execution failed due to network error.";
+                    testSummary.className = "test-results-summary failed";
+                    individualTestResults.textContent = errorMsg;
+                }
+            }
+        }
+
+        // New function to fetch AI-generated content
+        async function fetchAIContent(code, assignmentId, assignmentDescription) {
+            // Fetch AI Feedback
+            aiFeedbackContainer.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating AI feedback...';
+            try {
+                const response = await fetch('/api/get_ai_feedback', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ code, assignment_id: assignmentId, assignment_description: assignmentDescription })
+                });
+                const result = await response.json();
+                if (response.ok) {
+                    aiFeedbackContainer.innerHTML = result.feedback;
+                } else {
+                    aiFeedbackContainer.innerHTML = `<span style="color: var(--danger);">Error generating AI feedback: ${result.error || 'Unknown error'}</span>`;
+                }
+            } catch (error) {
+                aiFeedbackContainer.innerHTML = `<span style="color: var(--danger);">Network Error fetching AI feedback: ${error.message}</span>`;
+            }
+
+            // Fetch Imp/Quiz
+            impQuizContainer.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Generating Imp/Quiz content...';
+            try {
+                const response = await fetch('/api/get_imp_quiz', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ assignment_id: assignmentId, assignment_description: assignmentDescription })
+                });
+                const result = await response.json();
+                if (response.ok) {
+                    impQuizContainer.innerHTML = result.content;
+                } else {
+                    impQuizContainer.innerHTML = `<span style="color: var(--danger);">Error generating Imp/Quiz: ${result.error || 'Unknown error'}</span>`;
+                }
+            } catch (error) {
+                impQuizContainer.innerHTML = `<span style="color: var(--danger);">Network Error fetching Imp/Quiz: ${error.message}</span>`;
+            }
+        }
+
+        runCodeLocalBtn.addEventListener('click', () => executeCode(false));
+        submitAssignmentBtn.addEventListener('click', () => executeCode(true));
+
+        // Initial load
+        loadAssignmentDetails();
+        // loadPreviousSubmission(); // This is now called from loadAssignmentDetails
+    </script>
+</body>
+</html>

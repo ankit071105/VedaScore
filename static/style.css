@@ -1,0 +1,307 @@
+/* Basic styles for CodeZen theme */
+body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+    background-color: #0b0f19;
+    color: #e0e6f0;
+    margin: 0;
+    padding: 20px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    position: relative; /* For background animation */
+    overflow: hidden; /* Hide overflow of background elements */
+}
+
+.background-elements {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: -2; /* Below the main body background gradient */
+    pointer-events: none;
+    overflow: hidden; /* Ensure elements don't show outside the body */
+}
+
+.background-elements div {
+    position: absolute;
+    background: rgba(106, 13, 173, 0.1); /* Purple tint, semi-transparent */
+    border-radius: 50%; /* Circular shapes */
+    animation: floatAndFade 15s ease-in-out infinite;
+}
+
+/* Individual element sizes and positions (adjust as needed) */
+.background-elements div:nth-child(1) {
+    width: 80px;
+    height: 80px;
+    top: 10%;
+    left: 5%;
+    animation-delay: 0s;
+}
+
+.background-elements div:nth-child(2) {
+    width: 120px;
+    height: 120px;
+    top: 40%;
+    left: 80%;
+    background: rgba(51, 65, 85, 0.15); /* Darker blue tint */
+    animation-delay: 5s;
+}
+
+.background-elements div:nth-child(3) {
+    width: 100px;
+    height: 100px;
+    top: 70%;
+    left: 20%;
+    animation-delay: 10s;
+}
+
+.background-elements div:nth-child(4) {
+    width: 60px;
+    height: 60px;
+    top: 25%;
+    left: 60%;
+    animation-delay: 3s;
+}
+
+/* Adding more elements for a richer background */
+.background-elements div:nth-child(5) {
+    width: 90px;
+    height: 90px;
+    top: 5%;
+    left: 40%;
+    background: rgba(139, 92, 246, 0.12); /* Lighter purple tint */
+    animation-delay: 7s;
+    border-radius: 0; /* Make this one a square */
+}
+
+.background-elements div:nth-child(6) {
+    width: 70px;
+    height: 70px;
+    top: 85%;
+    left: 70%;
+    animation-delay: 12s;
+}
+
+.background-elements div:nth-child(7) {
+    width: 110px;
+    height: 110px;
+    top: 15%;
+    left: 90%;
+    background: rgba(51, 65, 85, 0.1); /* Darker blue tint */
+    animation-delay: 2s;
+}
+
+.background-elements div:nth-child(8) {
+    width: 50px;
+    height: 50px;
+    top: 55%;
+    left: 10%;
+    animation-delay: 8s;
+    border-radius: 0; /* Make this one a square */
+}
+
+@keyframes floatAndFade {
+    0% {
+        transform: translateY(0) rotate(0deg) scale(1);
+        opacity: 0.5;
+    }
+    50% {
+        transform: translateY(-20px) rotate(180deg) scale(1.1);
+        opacity: 0.8;
+    }
+    100% {
+        transform: translateY(0) rotate(360deg) scale(1);
+        opacity: 0.5;
+    }
+}
+
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, #0f172a, #1e293b, #0f172a, #334155);
+    background-size: 400% 400%;
+    animation: gradientAnimation 15s ease infinite;
+    z-index: -1; /* Ensure it stays in the background */
+}
+
+@keyframes gradientAnimation {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+h1 {
+    color: #ffffff;
+    text-align: center;
+    margin-bottom: 10px; /* Adjusted margin */
+    font-size: 2.5em; /* Larger for main title */
+}
+
+h2 {
+    color: #e0e6f0; /* Color for secondary headings */
+    text-align: center;
+    margin-bottom: 30px;
+    font-size: 1.2em;
+}
+
+.container {
+    background: linear-gradient(135deg, #1a202c, #2d3748, #1a202c); /* Gradient background */
+    background-size: 200% 200%;
+    animation: containerGradientAnimation 10s ease infinite;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 10px 20px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    max-width: 400px;
+    z-index: 1;
+    position: relative;
+}
+
+@keyframes containerGradientAnimation {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+video {
+    display: block;
+    margin: 0 auto 20px auto;
+    border-radius: 8px;
+    background-color: #000;
+    max-width: 100%; /* Ensure video scales within container */
+    height: auto;
+}
+
+.role-selector {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
+    background-color: #2d3748;
+    border-radius: 8px;
+    padding: 4px;
+    position: relative;
+    overflow: hidden; /* Hide the slider overflow */
+}
+
+.role-selector .slider {
+    position: absolute;
+    top: 4px;
+    left: 4px;
+    height: calc(100% - 8px);
+    width: calc(50% - 4px);
+    background-color: #6a0dad;
+    border-radius: 6px;
+    transition: transform 0.4s cubic-bezier(0.68, -0.55, 0.27, 1.55); /* More bouncy transition */
+    z-index: 1;
+}
+
+.role-selector button {
+    flex: 1;
+    padding: 10px;
+    border: none;
+    border-radius: 6px;
+    background-color: transparent;
+    color: #a0aec0;
+    font-size: 15px;
+    cursor: pointer;
+    transition: color 0.3s ease, transform 0.2s ease; /* Add transform transition */
+    position: relative;
+    z-index: 2;
+}
+
+.role-selector button.active {
+    color: white;
+    transform: scale(1.02); /* Slight scale on active */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3); /* Add a subtle shadow */
+}
+
+#login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px; /* Gap between inputs and buttons */
+}
+
+input[type="email"],
+input[type="password"],
+input[type="text"] {
+    width: calc(100% - 20px);
+    padding: 10px 10px; /* Slightly smaller padding */
+    border: 1px solid #3b4455;
+    border-radius: 8px;
+    background-color: #2d3748;
+    color: #e0e6f0;
+    font-size: 15px; /* Slightly smaller font */
+}
+
+button#face-auth-button,
+button#traditional-verify-button {
+    padding: 10px 15px; /* Smaller padding */
+    font-size: 15px; /* Smaller font */
+    width: auto; /* Allow buttons to size based on content */
+    align-self: center; /* Center buttons within the flex container */
+}
+
+.button-group {
+    display: flex;
+    justify-content: space-around; /* Distribute space around buttons */
+    gap: 10px; /* Gap between buttons */
+    margin-top: 10px;
+}
+
+button {
+    width: 100%;
+    padding: 12px;
+    border: none;
+    border-radius: 8px;
+    background-color: #6a0dad; /* A purple shade matching CodeZen */
+    color: white;
+    font-size: 16px;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+button:hover {
+    background-color: #8b5cf6; /* Lighter purple on hover */
+}
+
+#message-section p {
+    text-align: center;
+    font-size: 18px;
+    margin-top: 20px;
+    color: #90cdf4; /* Light blue for messages */
+}
+
+#registration-section {
+    margin-top: 20px;
+    padding-top: 20px;
+    border-top: 1px solid #3b4455;
+}
+
+#initial-prompt {
+    text-align: center;
+}
+
+#login-message-section p {
+    text-align: center;
+    font-size: 18px;
+    margin-top: 20px;
+    color: #90cdf4;
+}

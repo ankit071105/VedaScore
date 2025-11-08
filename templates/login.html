@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Welcome! Log In</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+    <div class="background-elements">
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+        <div></div>
+    </div>
+    <div class="container">
+        <h1>VedaScore</h1>
+        <h2 style="color: #e0e6f0; text-align: center; margin-bottom: 20px;">Welcome! Log In</h2>
+        
+        <div class="role-selector">
+            <button id="student-role" class="active">Student</button>
+            <button id="instructor-role">Instructor</button>
+            <span class="slider"></span>
+        </div>
+
+        <form id="login-form">
+            <input type="text" id="login-name" placeholder="Name" required>
+            <input type="email" id="login-email" placeholder="Email" required>
+            <input type="password" id="login-password" placeholder="Password" required>
+            
+            <div class="button-group">
+                <button type="button" id="face-auth-button" style="display:block;">Face Auth</button>
+                <button type="submit" id="traditional-verify-button">Verify</button>
+            </div>
+        </form>
+
+        <div id="login-message-section" style="display:none;">
+            <p id="login-status-message"></p>
+        </div>
+    </div>
+
+    <script>
+        const studentRoleButton = document.getElementById('student-role');
+        const instructorRoleButton = document.getElementById('instructor-role');
+        const faceAuthButton = document.getElementById('face-auth-button');
+        const loginEmailInput = document.getElementById('login-email');
+        const loginPasswordInput = document.getElementById('login-password');
+        const loginNameInput = document.getElementById('login-name');
+        const loginForm = document.getElementById('login-form');
+        const loginStatusMessage = document.getElementById('login-status-message');
+        const loginMessageSection = document.getElementById('login-message-section');
+        const slider = document.querySelector('.role-selector .slider');
+
+        let currentRole = 'student';
+
+        function updateRoleDisplay() {
+            if (currentRole === 'student') {
+                studentRoleButton.classList.add('active');
+                instructorRoleButton.classList.remove('active');
+                faceAuthButton.style.display = 'block';
+                slider.style.transform = 'translateX(0)';
+            } else {
+                studentRoleButton.classList.remove('active');
+                instructorRoleButton.classList.add('active');
+                faceAuthButton.style.display = 'none';
+                slider.style.transform = 'translateX(100%)';
+            }
+        }
+
+        studentRoleButton.addEventListener('click', () => {
+            currentRole = 'student';
+            updateRoleDisplay();
+        });
+
+        instructorRoleButton.addEventListener('click', () => {
+            currentRole = 'instructor';
+            updateRoleDisplay();
+        });
+
+        faceAuthButton.addEventListener('click', () => {
+            window.location.href = '{{ url_for('face_auth_page') }}';
+        });
+
+        loginForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const email = loginEmailInput.value;
+            const password = loginPasswordInput.value;
+            const name = loginNameInput.value;
+
+            fetch('/login_traditional', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ name, email, password, role: currentRole })
+            })
+            .then(response => response.json())
+            .then(data => {
+                loginMessageSection.style.display = 'block';
+                loginStatusMessage.innerText = data.message;
+                if (data.success) {
+                    // Redirect to dashboard after successful login
+                    setTimeout(() => {
+                        if (data.redirect) {
+                            window.location.href = data.redirect;
+                        } else {
+                            window.location.href = '/dashboard';
+                        }
+                    }, 1000);
+                }
+            })
+            .catch(error => {
+                console.error('Error during traditional login:', error);
+                loginMessageSection.style.display = 'block';
+                loginStatusMessage.innerText = 'Error during login.';
+            });
+        });
+
+        updateRoleDisplay();
+    </script>
+</body>
+</html>

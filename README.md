@@ -156,15 +156,7 @@ CodeZen helps students transition from learning → interview → career.
 
 ---
 
-## 💎 Contributors
 
-| Name | Role |
-|------|------|
-| **Mandeep Ray** | Founder & Lead Developer |
-| **AI Systems** | Face Recognition, Code Analysis, and Plagiarism Model |
-| **Frontend Team** | UI/UX, Dashboards, and Real-time Editor |
-
----
 
 ## 📜 License
 
